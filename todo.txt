@@ -1,0 +1,8 @@
+I will host this by the end of Dec
+
+Generally there are two servers onr for the front-end and one for the backend. 
+Both will interact with each other. In our synario we will be creating two servers. The front end server will be the sap ui5 server, but all the server file serving would be done by the exprees. and the backend server will be an express server.
+
+So lets start and and go on and work on the project.
+
+data processing -> server

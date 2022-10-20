@@ -1,0 +1,3 @@
+There will be one problem in the connection of backend server and the fronend server.
+The fron end will be done in the sapUI5 and the backend server will be created in the node js.
+The data processing things will be done in the java script and we will create a different server for that.
