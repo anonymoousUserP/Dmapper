@@ -1,2 +1,2 @@
 # Dmapper
-Dmapper Application is a wewbapplication that allows seamless automating data processing and visualization
+Dmapper Application is a webApplication that allows seamless automating data processing and visualization
