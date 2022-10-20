@@ -1,9 +1,3 @@
-/* ======================================================================== */ 
-
- /*                      NOT RELATED TO THE TTUTORIAL                        */
-
-/* ======================================================================== */
-
 *{
 	
 	
@@ -15,8 +9,6 @@
 	list-style: none;
 
 }
-
-
 *,
 *::before,
 *::after {
@@ -27,8 +19,6 @@
 	outline: none;
 	list-style: none;
 }
-
-
 :root {
   --step--2: clamp(0.69rem, calc(0.58rem + 0.60vw), 1.00rem);
   --step--1: clamp(0.83rem, calc(0.67rem + 0.81vw), 1.25rem);
@@ -117,8 +107,6 @@ body {
   line-height: 1.5;
   font-family: var(--ff-primary);
 }
-
-
 /* A elements that don't have a class get default styles */
 a:not([class]) {
  text-decoration-skip-ink: auto;
@@ -154,18 +142,6 @@ select {
     scroll-behavior: auto !important;
   }
 }
-
-
-
-/* ======================================================================== */ 
-
- /*                      RELATED TO THE TTUTORIAL                        */
-
-/* ======================================================================== */
-
-
-
-
 body {
 	height: 100vh;
 	display: flex;
@@ -178,8 +154,6 @@ body {
 	background-repeat: no-repeat;
 	background-size: cover;
 }
-
-
 .container {
 	position: relative;
 	width: 100%;
