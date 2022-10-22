@@ -1,7 +1,8 @@
 const express = require("express");
 const jwt = require('jsonwebtoken');
 const { v4: uuid } = require('uuid');
-const mongoose = require('mongoose');
+const userInfo = require('./db');
+const validator = require('email-validator');
 
 // Defining the stucture of the table or here schema.
 
@@ -27,7 +28,7 @@ app.post('/api/login', async (req, res) => {
 
     const username = req.body.username;
     const password = req.body.password;
-	// const user = await User.findOne({ username }).lean()
+	const user = await userInfo.findOne({ name : username })
 
 	if (!user) {
         return res.json({status : 'error', error: 'User does not exists.'}); 
@@ -35,7 +36,6 @@ app.post('/api/login', async (req, res) => {
 
 	if (await bcrypt.compare(password, user.password)) {
 		// the username, password combination is successful
-
 		const token = jwt.sign(
 			{
 				id: user._id,
@@ -43,49 +43,45 @@ app.post('/api/login', async (req, res) => {
 			},
 			JWT_SECRET
 		)
-
 		return res.json({ status: 'ok', data: token })
 	}
 
-	res.json({ status: 'error', error: 'Invalid username/password' })
+	return res.json({ status: 'error', error: 'Invalid username/password' })
 })
 
+app.post('/api/emailCheck', async (req,res)=>{
+	const email = req.body.email;
+	console.log(email);
 
+	const result = validator.validate(email); 
+	res.json({result});
+})
 
 app.post('/api/register', async (req, res) => {
-	const { username, password: plainTextPassword } = req.body
 
-	if (!username || typeof username !== 'string') {
-		return res.json({ status: 'error', error: 'Invalid username' })
+	const username = req.body.username;
+    const password = req.body.password;
+	const email = req.body.email;
+
+	const User = {
+		name : username,
+		password : password,
+		email : email,
+		createdAt : new Date(),
+		updatedAt : new Date()
 	}
-
-	if (!plainTextPassword || typeof plainTextPassword !== 'string') {
-		return res.json({ status: 'error', error: 'Invalid password' })
-	}
-
-	if (plainTextPassword.length < 5) {
-		return res.json({
-			status: 'error',
-			error: 'Password too small. Should be atleast 6 characters'
-		})
-	}
-
-	const password = await bcrypt.hash(plainTextPassword, 10)
 
 	try {
-		const response = await User.create({
-			username,
-			password
-		})
-		console.log('User created successfully: ', response)
+		const response = await userInfo.create(User);
+		console.log('User created successfully: ', response);
 	} catch (error) {
 		if (error.code === 11000) {
-			// duplicate key
 			return res.json({ status: 'error', error: 'Username already in use' })
 		}
-		throw error
+		console.log(error.message);
+		return res.json({status : 'error',message : error.message});
+		// throw error
 	}
-
 	res.json({ status: 'ok' })
 })
 
