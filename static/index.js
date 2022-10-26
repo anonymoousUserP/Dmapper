@@ -8,14 +8,13 @@ signUpButton.addEventListener("click", () => {
 
 signInButton.addEventListener("click", () => {
     container.classList.remove("right-panel-active");
-    debugger;
 });
 
 // validation funtion for the email
 async function emailCheck (val){
 
     // Making a post request to the server for the email validation.
-    const result = await fetch('/api/emailCheck', {
+    const data = await fetch('/api/emailCheck', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,26 +24,22 @@ async function emailCheck (val){
         })
     }).then((res) => res.json());
 
-    console.log(result.data);
-    return val.length < 30 && result.data;
+    return val.length < 30 && data.result;
 }
 
 // name validation. 
 const nameCheck = (val) => val.length > 5 && val.length < 30;
 
 // password validation
-const passwordCheck = (val) => val.length > 8 && val.length < 30;
+const passwordCheck = (val) => val.length >= 8 && val.length < 30;
 
-// We will get the user id and password, then will make a post request to the server and in resposne it will it send a ok message alog with a jwt token which we attach to the url of the user.
-// This function will do the authentication for the user.
 
 document.getElementById("signin-btn").addEventListener("click", async ()=>{
-    debugger;
 
     const username = document.getElementById('SigninUsername').value
     const password = document.getElementById('SigninPassword').value
 
-    const eCheck = emailCheck(username)
+    const eCheck = await emailCheck(username)
     if(!eCheck){
         alert('Invalid email');
         return;
@@ -55,10 +50,6 @@ document.getElementById("signin-btn").addEventListener("click", async ()=>{
         return;
     }
 
-
-    console.log(username,password);
-    debugger;
-
     // Making a post request to the server.
     const result = await fetch('/api/login', {
         method: 'POST',
@@ -66,7 +57,7 @@ document.getElementById("signin-btn").addEventListener("click", async ()=>{
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            username: username,
+            email: username,
             password : password
         })
     }).then((res) => res.json())
@@ -75,29 +66,39 @@ document.getElementById("signin-btn").addEventListener("click", async ()=>{
         // everythign went fine
         console.log('Got the token: ', result.data)
         localStorage.setItem('token', result.data)
-        alert('Success')
+        alert('Successfully logged in');
     } else {
         alert(result.error)
     }
 })
 
-async function signUpPress(oEvent){
+document.getElementById("openNav").addEventListener("click",()=>{
 
-    const username = document.getElementById('username').value
-    const password = document.getElementById('password').value
+    document.getElementById("myNav").style.width = "100%";
+})
 
-    console.log(username,password);
-    debugger;
+  
+  document.getElementById("closeNav").addEventListener("click",()=>{
+    console.log('hello');
+    document.getElementById("myNav").style.width = "0%";
+  })
+
+document.getElementById("signup-btn").addEventListener("click", async ()=>{
+
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
     // Making a post request to the server for the user signUp.
-    const result = await fetch('/api/login', {
+    const result = await fetch('/api/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             username: username,
-            password : password
+            password : password,
+            email : email
         })
     }).then((res) => res.json())
 
@@ -105,8 +106,8 @@ async function signUpPress(oEvent){
         // everythign went fine
         console.log('Got the token: ', result.data)
         localStorage.setItem('token', result.data)
-        alert('Success')
+        alert('User successfully registered');
     } else {
         alert(result.error)
     }
-}
+})

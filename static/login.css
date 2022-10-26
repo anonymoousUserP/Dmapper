@@ -1,13 +1,64 @@
-*{
-	
-	
+.overlaay {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 3;
+	top: 0;
+	left: 0;
+	background-color: rgb(0,0,0);
+	background-color: rgba(0,0,0, 0.9);
+	overflow-x: hidden;
+	transition: 0.5s;
+  }
+  
+  .overlaay-content {
+	position: relative;
+	top: 25%;
+	width: 100%;
+	text-align: center;
+	margin-top: 30px;
+  }
+  
+  .overlaay a {
+	padding: 8px;
+	text-decoration: none;
+	font-size: 36px;
+	color: #818181;
+	display: block;
+	transition: 0.3s;
+  }
+  
+  .overlaay a:hover, .overlaay a:focus {
+	color: #f1f1f1;
+  }
+  
+  .overlaay .closebtn {
+	position: absolute;
+	top: 20px;
+	right: 45px;
+	font-size: 60px;
+  }
+  
+  @media screen and (max-height: 450px) {
+	.overlaay a {font-size: 20px}
+	.overlaay .closebtn {
+	font-size: 40px;
+	top: 15px;
+	right: 35px;
+	}
+  } 
+
+  
+
+
+
+*{	
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	text-decoration: none;
 	outline: none;
 	list-style: none;
-
 }
 *,
 *::before,
@@ -27,27 +78,8 @@
   --step-2: clamp(1.44rem, calc(1.05rem + 1.95vw), 2.44rem);
   --step-3: clamp(1.73rem, calc(1.21rem + 2.58vw), 3.05rem);
   --step-4: clamp(2.07rem, calc(1.39rem + 3.40vw), 3.82rem);
-  --step-5: clamp(2.49rem, calc(1.60rem + 4.45vw), 4.77rem);
-	
-	/* Font style */
-	
-	--ff-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	
-	/* Color style */
-	
-	/*
-	--color-primary:#c51350;
-	--color-secondary:#ff9a3c;
-	--color-body:#333;
-	--color-bg: #006600;
-	--color-primary-dark:#007f67;
-	--color-error:#cc3333;
-	--color-success:#4bb544;
-	--color-link:#cdcdcc;
-	--color-border:darkgrey;
-	--bs:#ffa857;
-	*/
-	
+  --step-5: clamp(2.49rem, calc(1.60rem + 4.45vw), 4.77rem);	
+	--ff-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;	
 	--color-primary: #0092ca;
 	--color-secondary: #6dd5ed;
 	--color-primary-dark:#192294;
@@ -336,15 +368,6 @@ footer a:hover {
     -webkit-transform: translateX(-15%);
 	transform: translateX(-15%);
   }
-
-/* ----------------- The start of SideShift Design ----------------- */
-
-
-
-
-/* -----------------The start of Social media Design* ----------------- */
-
-
 .social__media__container {
 	position: relative;
 	display: flex;
@@ -428,7 +451,7 @@ a.social:hover::before {
 a.social.codepen::before {
 	background: #000000;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right, #434343, #000000); 
 
 }
 
@@ -445,11 +468,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', end
 	background-position: center;
 	background-size: cover;
 }
-
-/* -----------------The end of Social media Design* ----------------- */
-
-
-
 span.under__social {
 	display: grid;
 	place-items: center;
@@ -517,11 +535,6 @@ a.login-link:hover {
 	margin: -.3rem 0 1.5rem 0;
 }
 
-
-
-
-/* -----------------The start of Validation* ----------------- */
-
 input:focus,
 input:not(:placeholder-shown) {
 	background-color: var(--color-background);
@@ -548,11 +561,6 @@ input:focus:invalid {
 input:invalid:not(:placeholder-shown) {
 	border-color: var(--color-error);
 }
-
-/* -----------------The end of Validation* ----------------- */
-
-
-
 
 .group.button-group {
 	width: 70%;

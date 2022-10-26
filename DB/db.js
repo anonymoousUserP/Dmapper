@@ -45,11 +45,10 @@ const userSchema = new mongoose.Schema({
     password : {
         type : String,
         minLength : 8,
-        maxLength : 30,
         validate : {
             validator : (value)=>{
                 // password validation validation should be herer
-                if(value.length >30)
+                if(value.length >300)
                 return false;
                 return true;
             },
@@ -79,7 +78,7 @@ const userSchema = new mongoose.Schema({
         default : () => new Date(),
         required : true
     }
-});
+}, { collection: 'userInfo' });
 
 userSchema.methods.sayHi = function(){
     console.log(`${this.name} is saying Hii...!!`);
@@ -96,16 +95,14 @@ userSchema.query.ByName = function(name){
 }
 
 userSchema.virtual('namedEmail').get(function(){
-
     return `${this.name} has the email ${this.email}`
-
 });
 
 // Pre and post for before and after.
 userSchema.pre('save', function(next){
     this.updateAt = Date.now();
 
-    console.log('Inside a middleware function');
+    console.log(`${this.name}'s Data update`);
     // Move to the next peice of code.
     next();
 });

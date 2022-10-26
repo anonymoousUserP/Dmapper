@@ -6,3 +6,8 @@ Both will interact with each other. In our synario we will be creating two serve
 So lets start and and go on and work on the project.
 
 data processing -> server
+
+
+* Backend server side where all the user activities.
+* React Server where all the web application ui will be there.
+* UI5 Side where we will be using our main application.
