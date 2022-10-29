@@ -35,10 +35,10 @@
 					
 					<div class="button-input-group">
 						<div class="group input-group">
-						<input type="text" placeholder="Name" required>
+						<input type="text" id="name" placeholder="Name" required>
 					</div>
 					<div class="group input-group">
-						<input type="email" id="username" placeholder="Email" required>
+						<input type="email" id="email" placeholder="Email" required>
 					</div>
 					<div class="group input-group">
 						<input type="password" id="password" placeholder="Password" required pattern=".{8,}">
@@ -47,7 +47,7 @@
 						<span class="help__text">At least 8 character</span>
 					</div>
 					<div class="group button-group">
-						<button class="signup-btn" onclick="return false;">Sign Up</button>
+						<button id="signup-btn" class="signup-btn" >Sign Up</button>
 					</div>
 					</div>
 					
@@ -87,7 +87,7 @@
 						<a href="./dialog.html" class="login-link">Forgot your password?</a>
 					</div>
 					<div class="group button-group">
-						<button id="signin-btn" class="signin-btn" onclick="signinPress()">Sign in</button>
+						<button id="signin-btn" class="signin-btn">Sign in</button>
 					</div>
 				</div>
 				</form>

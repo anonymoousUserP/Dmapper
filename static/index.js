@@ -72,20 +72,10 @@ document.getElementById("signin-btn").addEventListener("click", async ()=>{
     }
 })
 
-document.getElementById("openNav").addEventListener("click",()=>{
-
-    document.getElementById("myNav").style.width = "100%";
-})
-
-  
-  document.getElementById("closeNav").addEventListener("click",()=>{
-    console.log('hello');
-    document.getElementById("myNav").style.width = "0%";
-  })
-
 document.getElementById("signup-btn").addEventListener("click", async ()=>{
+    debugger;
 
-    const username = document.getElementById('username').value;
+    const username = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
@@ -96,16 +86,13 @@ document.getElementById("signup-btn").addEventListener("click", async ()=>{
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            username: username,
+            name: username,
             password : password,
             email : email
         })
     }).then((res) => res.json())
 
     if (result.status === 'ok') {
-        // everythign went fine
-        console.log('Got the token: ', result.data)
-        localStorage.setItem('token', result.data)
         alert('User successfully registered');
     } else {
         alert(result.error)

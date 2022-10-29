@@ -6,8 +6,6 @@ mongoose.connect("mongodb://localhost:27017/dMapperDb",()=>{
     console.error(error);
 });
 
-// Module is the actual individual database object that we use in the
-
 // defining the schema(specifying the table design)
 const userSchema = new mongoose.Schema({
     name : {
@@ -58,15 +56,6 @@ const userSchema = new mongoose.Schema({
         },
         required : true
     },
-    email : {
-        type: String,
-        require : true,
-        lowercase : true,
-        minLength : 10,
-        maxLength : 30,
-        trim : true,
-        required : true
-    },
     createdAt : {
         type : Date,
         immutable : true,
@@ -106,8 +95,22 @@ userSchema.pre('save', function(next){
     // Move to the next peice of code.
     next();
 });
+// JOV -> jwtOtpV
+
+const jwtOtpVSchema = new mongoose.Schema({
+    token : {
+        type : String,
+        required : true
+    },
+    date : {
+        type : Date,
+        required : true
+    }
+})
+
+const jwtOtpV = mongoose.model("jwtOtpV",jwtOtpVSchema);
 
 // Defining the userInfo model in the database.
-const user =  mongoose.model("UserInfo",userSchema); 
+const userInfo =  mongoose.model("UserInfo",userSchema); 
 
-module.exports = user;
+module.exports = {userInfo,jwtOtpV};

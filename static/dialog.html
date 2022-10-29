@@ -13,6 +13,18 @@
         .form-gap {
             padding-top: 70px;
         }
+        body{
+            height: 100vh;
+            display: flex;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-align: center;
+            align-items: center;
+            background-image: url(./Image/img.png);
+            background-position:bottom;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +62,8 @@
                                     <a id="recover-submitA" href="#">
                                         <div class="form-group">
                                             <input name="recover-submit" id="recover-submit"
-                                                class="btn btn-lg btn-primary btn-block" value="Send OTP" type=""
+                                                class="btn btn-lg btn-primary btn-block" style="caret-color: transparent;" 
+                                                value="Send OTP" type=""
                                                 onclick="otpPress()">
                                         </div>
                                     </a>
