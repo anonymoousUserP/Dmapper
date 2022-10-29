@@ -7,6 +7,7 @@ const fsPromise = require('fs/promises');
 const logger = async (req,res,next) =>{
     const dateTime = `${format(new Date(), 'dd-MM-yyyy \t HH:mm:ss')}`
     const url = `${req.method}\t${req.protocol}://${req.get('host')}${req.url}`;
+    // console.log(req.get('host'))
 
     const message = `${uuid()} \t ${dateTime} \t ${url}\n`;
     

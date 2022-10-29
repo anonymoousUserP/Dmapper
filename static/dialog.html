@@ -35,21 +35,25 @@
                                             <span class="input-group-addon"><i
                                                     class="glyphicon glyphicon-envelope color-blue"></i></span>
                                             <input id="email" name="email" placeholder="email address"
-                                                class="form-control" type="email">                                   
+                                                class="form-control" type="email">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <span class="input-group-addon"><img style="height: 18px;" src="./Image/otp.png"/></span>
-                                                    <input id="otp" name="OTP" placeholder="Enter OTP"
-                                                        class="form-control" type="">
+                                            <span class="input-group-addon"><img style="height: 18px;"
+                                                    src="./Image/otp.png" /></span>
+                                            <input id="otp" name="OTP" placeholder="Enter OTP" class="form-control"
+                                                type="">
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <input name="recover-submit" id="recover-submit" class="btn btn-lg btn-primary btn-block"
-                                            value="Send OTP" type="" onclick="otpPress()">
-                                    </div>
+                                    <a id="recover-submitA" href="#">
+                                        <div class="form-group">
+                                            <input name="recover-submit" id="recover-submit"
+                                                class="btn btn-lg btn-primary btn-block" value="Send OTP" type=""
+                                                onclick="otpPress()">
+                                        </div>
+                                    </a>
                                 </form>
                             </div>
                         </div>
@@ -60,4 +64,5 @@
     </div>
 </body>
 <script src="./dialog.js"></script>
+
 </html>

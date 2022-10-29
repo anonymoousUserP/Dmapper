@@ -4,9 +4,27 @@ const { v4: uuid } = require('uuid');
 const userInfo = require('../DB/db');
 const validator = require('email-validator');
 const bcrypt  = require('bcrypt');
+const nodemailer = require('nodemailer');
+const user = require('../DB/db');
 require('dotenv').config({path:__dirname+'/../.env'})
 
 const router = express.Router();
+var otp = ''
+
+const transporter = nodemailer.createTransport({
+	host: 'smtp.gmail.com',
+    port: 465,
+    secureConnection: false, // use SSL
+	service: "Gmail",
+	auth: {
+		user: "dmapper.application@gmail.com",
+		pass: "ziljvhjdktqmrtyd"
+	},
+    tls: {
+        ciphers:'SSLv3'
+    }
+})
+
 
 router.post('/login', async (req, res) => {
 
@@ -37,6 +55,54 @@ router.post('/emailCheck', async (req,res)=>{
 
 	const result = validator.validate(email); 
 	res.json({result});
+})
+
+// a api for sending otp to the user's email.
+router.post('/sendOtp', async (req,res)=>{
+	const useremail = req.body.email;
+	const user = await userInfo.findOne({ email : useremail })
+	if(!user){
+		res.json({status : 'error', error: 'User does not exists.'})
+	}
+
+	// sending a mail to the client's email.
+	otp = Math.ceil(Math.random()*1000000);
+	const message = {
+		from: "dmapper.application@gmail.com",
+		to: user.email,
+		subject: "Your Email OTP to Reset Password on Dmapper",
+		text: `Hi ${user.name},\n\nYour Email One Time Password (OTP) to reset password is ${otp}. The OTP is valid for 5 minutes.\nFor account safety, do not share your OTP with others.\n\nRegards,\nTeam Dmapper.`
+	}
+
+	transporter.sendMail(message, function(err, info) {
+		if (err) {
+		  console.log(err)
+		} else {
+		  console.log(info);
+		}
+	})
+
+	return res.json({status:'ok',msg:'OTP sent to the mail successfully'});
+})
+
+// Check the otp sent by user is correct or not
+router.post('/otpCheck', (req,res)=>{
+	if(otp===req.body.otp){
+		return res.json({status:'ok',msg:'OTP varified successfully'});
+	}
+	else{
+		res.json({status : 'error', error: "OTP doesn't match."})
+	}
+})
+
+// 
+router.post('/updatePassword',(req,res)=>{
+	if(otp===req.body.otp){
+		user.updateOne({email:req.body.email})
+		return res.json({status:'ok',msg:'Password updated successfully'});
+
+	}
+	return res.json({status:'error',msg:'some mischief have been done'});	
 })
 
 router.post('/register', async (req, res) => {
