@@ -1,5 +1,4 @@
 async function otpPress(event){
-    debugger;
     if(document.getElementById("recover-submit").value === "Submit"){
         checkOtp();
         return;
@@ -30,7 +29,6 @@ async function otpPress(event){
     
     if (result.status === 'ok') {
         // everythign went fine
-        debugger;
         // document.getElementById("recover-submitA").href = './newPassword.html';
         document.getElementById("recover-submit").value = "Submit";
         alert('otp sent successfully');
@@ -58,7 +56,6 @@ async function emailCheck (val){
 
 // function to check the otp.
 async function checkOtp(){
-    debugger;   
     const otp = document.getElementById('otp').value;
     const email = document.getElementById('email').value;
 
@@ -75,9 +72,10 @@ async function checkOtp(){
     }).then((res) => res.json())
     
     if (result.status === 'ok') {
-        // everythign went fine
-        alert('otp verified Successfully');
-        
+        alert(result.msg);
+        window.location.href = './newPassword.html';
+        localStorage.setItem("otpToken", result.token);
+        localStorage.setItem("email",email);
     } else {
         alert(result.error)
     }

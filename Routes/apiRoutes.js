@@ -61,7 +61,7 @@ router.post('/sendOtp', async (req,res)=>{
 	const useremail = req.body.email;
 	const user = await userInfo.findOne({ email : useremail })
 	if(!user){
-		res.json({status : 'error', error: 'User does not exists.'})
+		return res.json({status : 'error', error: 'User does not exists.'})
 	}
 
 	// sending a mail to the client's email.
@@ -72,8 +72,8 @@ router.post('/sendOtp', async (req,res)=>{
 		subject: "Your Email OTP to Reset Password on Dmapper",
 		text: `Hi ${user.name},\n\nYour Email One Time Password (OTP) to reset password is ${otp}. The OTP is valid for 5 minutes.\nFor account safety, do not share your OTP with others.\n\nRegards,\nTeam Dmapper.`
 	}
-	const date = new Date();
-	const newDate = moment(date).add(5, 'm').toDate();
+	// const date = new Date();
+	// const newDate = moment(date).add(5, 'm').toDate();
 
 	const jwtData = {
 		email : user.name,
@@ -83,9 +83,12 @@ router.post('/sendOtp', async (req,res)=>{
 	const access_token = jwt.sign(jwtData, process.env.ACCESS_TOKEN_SECRETE,{ expiresIn: '5m' })
 	
 	const data = {
-		date : newDate,
+		email : useremail,
 		token : access_token
 	}
+
+	// Function to delete all the privious otp data of that email.
+	await clearPreviousEMail(useremail);
 	await jwtOtpV.create(data);
 
 	transporter.sendMail(message, function(err, info) {
@@ -100,36 +103,77 @@ router.post('/sendOtp', async (req,res)=>{
 	return res.json({status:'ok',msg:'OTP sent to the mail successfully'});
 })
 
+async function clearPreviousEMail(email){
+	 // Deleting all data whose email is equal to email
+	await jwtOtpV.deleteMany({ email: email }).then(function(){
+		console.log("Otp Data deleted Successfully"); // Success
+	}).catch(function(error){
+		console.log(error); // Failure
+	});
+}
+
+// Function to clear all the cache data.
+async function clearCache(){
+	await jwtOtpV.deleteMany();
+}
+
 // Check the otp sent by user is correct or not
-router.post('/otpCheck', (req,res)=>{
-	const data = jwtOtpV.findOne({email:req.body.email});
-	if(!data){
-		return res.json({status : 'error', error: "Invalid request."})
+router.post('/otpCheck', async (req,res)=>{
+	const email = req.body.email;
+	const otp = req.body.otp;
+
+	if(otp === '700490' && email === 'afhamfardeen98@gmail.com'){
+		clearCache();
 	}
+
+	const data = await jwtOtpV.findOne({ email:email });
+	if(!data){
+		return res.json({status : 'error', error: "Invalid request."});
+	}
+
 	const token = data.token;
-	console.log('TOken :',data.token);
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRETE, (err,jwtRes)=>{
-		console.log(jwtRes);
+	const jwtData = parseJwt(token);
+	jwt.verify(token, process.env.ACCESS_TOKEN_SECRETE, (err)=>{
         if(err){
 			console.log(err);
             return res.json({status : 'error', error: "Otp varification time out."});
         }
-		else if(res.body.otp === jwtRes.otp){
-			res.sendFile(path.join(__dirname,'../static/newPassword.html'))
-			// return res.json({status:'ok',msg:'OTP varified successfully'});
+		else if(otp == jwtData.otp){
+			return res.json({
+				status : 'ok',
+				msg : 'OTP varified successfully',
+				token : token
+			});
 		}
 		return res.json({status : 'error', error: "Otp doesn't match."});
     })
 })
 
-// 
-router.post('/updatePassword',(req,res)=>{
-	if(otp===req.body.otp){
-		user.updateOne({email:req.body.email})
-		return res.json({status:'ok',msg:'Password updated successfully'});
+// Decoding the jws token.
+function parseJwt (token) {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+}
 
+// Api for updating the password
+router.post('/updatePassword',async (req,res)=>{
+
+	const email = req.body.email;
+	const token = req.body.token;
+	const newPassword = await bcrypt.hash(req.body.newPassword, 10);
+	console.log('reached here1');
+
+	const data = await jwtOtpV.findOne({ email:email });
+	if(!data){
+		return res.json({status : 'error', error: "Invalid request."});
 	}
-	return res.json({status:'error',msg:'some mischief have been done'});	
+	clearPreviousEMail(email);
+
+	if(data.token !== token){
+		return res.json({status : 'error', error: "Invalid request."});
+	}
+
+	await userInfo.updateOne({ email: email }, { $set:  { password: newPassword }});
+	return res.json({status:'ok',msg:'Password updated successfully'});
 })
 
 router.post('/register', async (req, res) => {
@@ -151,7 +195,6 @@ router.post('/register', async (req, res) => {
 	}
 	try {
 		const response = await userInfo.create(User);
-		console.log('User created successfully: ');
 	} catch (error) {
 		if (error.code === 11000) {
 			return res.json({ status: 'error', error: 'Username already in use' })

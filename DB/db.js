@@ -102,8 +102,8 @@ const jwtOtpVSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    date : {
-        type : Date,
+    email : {
+        type : String,
         required : true
     }
 })
