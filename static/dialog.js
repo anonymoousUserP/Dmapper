@@ -77,6 +77,9 @@ async function checkOtp(){
         localStorage.setItem("otpToken", result.token);
         localStorage.setItem("email",email);
     } else {
-        alert(result.error)
+        alert(result.error);
+        if(result.error=='Otp varification time out.'){
+            window.location.href = './index.html';
+        }
     }
 }

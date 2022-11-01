@@ -50,6 +50,7 @@ router.post('/login', async (req, res) => {
 })
 
 router.post('/emailCheck', async (req,res)=>{
+	// console.log(req.socket.remoteAddress);     // ip address
 	const email = req.body.email;
 
 	const result = validator.validate(email); 
@@ -160,7 +161,6 @@ router.post('/updatePassword',async (req,res)=>{
 	const email = req.body.email;
 	const token = req.body.token;
 	const newPassword = await bcrypt.hash(req.body.newPassword, 10);
-	console.log('reached here1');
 
 	const data = await jwtOtpV.findOne({ email:email });
 	if(!data){
