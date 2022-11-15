@@ -69,6 +69,46 @@ const userSchema = new mongoose.Schema({
     }
 }, { collection: 'userInfo' });
 
+
+// shema for the feedback
+const FeedBack = new mongoose.Schema({
+    rating : {
+        type : Number,
+        validate : {
+                validator : (value)=>{
+                if(value > 5 || value < 1)
+                return false;
+                return true;
+            }
+        }
+    },
+    feedBackText : {
+        type : String,
+        validate : {
+            validator : (value) => {
+                if(value.length > 300){
+                    return false;
+                }
+                return true;
+            },
+            message : (props)=>{
+                return 'The text size should be less than 300 character';
+            }
+        },
+    },
+    checked : {
+        type : Number
+    },
+    createdAt : {
+        type : Date,
+        immutable : true,
+        default : () => new Date(),
+        required : true
+    }
+},{collection: 'feedbackTable'});
+
+const feedBack = mongoose.model("feedback", FeedBack);
+
 userSchema.methods.sayHi = function(){
     console.log(`${this.name} is saying Hii...!!`);
 }
@@ -113,4 +153,4 @@ const jwtOtpV = mongoose.model("jwtOtpV",jwtOtpVSchema);
 // Defining the userInfo model in the database.
 const userInfo =  mongoose.model("UserInfo",userSchema); 
 
-module.exports = {userInfo,jwtOtpV};
+module.exports = {userInfo,jwtOtpV,feedBack};

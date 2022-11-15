@@ -4,7 +4,7 @@ const { v4: uuid } = require('uuid');
 const validator = require('email-validator');
 const bcrypt  = require('bcrypt');
 const nodemailer = require('nodemailer');
-const {userInfo,jwtOtpV} = require('../DB/db');
+const {userInfo,jwtOtpV,feedBack} = require('../DB/db');
 const moment = require('moment');
 const path = require('path')
 require('dotenv').config({path:__dirname+'/../.env'})
@@ -155,6 +155,26 @@ function parseJwt (token) {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
 }
 
+// api for storing the feedback
+router.post('/feedback',async (req,res)=>{
+	
+	const feedBackData = {
+		rating : req.body.rating,
+		feedBackText : req.body.feedbackText,
+		checked : req.body.join,
+		createdAt : new Date()
+	};
+	
+	console.log(feedBackData);
+	try {
+		const response = await feedBack.create(feedBackData);
+	} catch (error) {
+		console.log(error.message);
+		return res.json({status : 'error',message : error.message});
+	}
+	res.json({ status: 'ok' })
+});
+
 // Api for updating the password
 router.post('/updatePassword',async (req,res)=>{
 
@@ -176,6 +196,7 @@ router.post('/updatePassword',async (req,res)=>{
 	return res.json({status:'ok',msg:'Password updated successfully'});
 })
 
+// api for registering a user.
 router.post('/register', async (req, res) => {
 
 	const username = req.body.name;

@@ -8,7 +8,14 @@ PORT = process.env.port
 
 // Initiallizing the express server.
 const app = express();
-app.use(logger);
+
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', "*");
+	res.header('Access-Control-Allow-Headers', "*");	
+	next();
+	console.log('access given');
+})
+
 
 // so that our app will be able to use json.
 app.use(express.json());

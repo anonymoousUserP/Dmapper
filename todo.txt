@@ -7,7 +7,40 @@ So lets start and and go on and work on the project.
 
 data processing -> server
 
-
 * Backend server side where all the user activities.
 * React Server where all the web application ui will be there.
 * UI5 Side where we will be using our main application.
+
+Target to host will be 1st january.
+
+three servers :
+react server -> front server
+backend server -> server having connection with db.
+ui5 server -> armcharts and data processing will occur here.
+
+Note that if we add subscription, only one device at a time even logged in can 
+
+add user table having columns
+
+User info table
+islogin, distinguish based on ip address(P), primary key from the userInfo table, isSubscribed, subscription id.
+
+session table:
+session start time, session end time, playing duration, no. of generate hit, chart type, upload data size[], no. of uppload, no of downloads, download type[].
+
+subscription table.
+username, country, city, 
+
+Initially every thing will be free.
+
+I will he heiring a team of developers to build the website.
+
+Phase 1 : Frontend creation
+
+-> Hier about 2 people building the react application(2 month). 6 thousand
+-> Will be building whole react application.
+-> I will just build the conceptual part and they will build all the html part.
+
+Phase 2 : 
+
+-> creation of am4contoller.
