@@ -157,7 +157,6 @@ function parseJwt (token) {
 
 // api for storing the feedback
 router.post('/feedback',async (req,res)=>{
-	
 	const feedBackData = {
 		rating : req.body.rating,
 		feedBackText : req.body.feedbackText,

@@ -9,16 +9,17 @@ PORT = process.env.port
 // Initiallizing the express server.
 const app = express();
 
+// so that our app will be able to use json.
+app.use(express.json());
+
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', "*");
 	res.header('Access-Control-Allow-Headers', "*");	
 	next();
-	console.log('access given');
 })
 
 
-// so that our app will be able to use json.
-app.use(express.json());
+
 
 // Rendering the index.html which will be having the login logout html file.
 app.use('/', express.static(path.join(__dirname, '/static')))
